@@ -18,3 +18,11 @@ def detect_os():
         return "linux"
     else:
         return "unknown"
+
+def print_devices_table(devices):
+    print("\n" + "="*80)
+    print(f"{'IP':<16} {'MAC':<18} {'Hostname'}")
+    print("-"*80)
+    for d in devices:
+        print(f"{d['ip']:<16} {d['mac']:<18} {d['hostname']}")
+    print("="*80 + "\n")
